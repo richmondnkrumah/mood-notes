@@ -5,7 +5,7 @@ import SearchIcon from '@/assets/svg/search.svg'
 import { scaleHorizontal,scaleVertical } from '@/utils/responsive'
 type Props = {}
 
-const HomeHeaderRight = (props: Props) => {
+const HomeHeaderRight = () => {
   return (
     <View style={{
       flexDirection: 'row',
