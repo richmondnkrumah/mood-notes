@@ -1,36 +1,36 @@
 type EMOJI = {
-  name: string,
+  id: string,
   color: string
 }
 
 export const Emojis: EMOJI[] = [{
-  name: "Happy",
+  id: "Happy",
   color: "#FFEBEB"
 },
 {
-  name: "Ecstatic",
+  id: "Ecstatic",
   color: "#FFE1C2"
 },
 {
-  name: "Frustrated",
+  id: "Frustrated",
   color: "#D6FFD6"
 },{
-  name: "Angry",
+  id: "Angry",
   color: "#FFEBD6"
 
 },{
-  name: "Neutral",
+  id: "Neutral",
   color: "#D6D6FF"
 },{
-  name: "Annoyed",
+  id: "Annoyed",
   color: "#EDD6FF"
 },{
-  name: "Furious",
+  id: "Furious",
   color: "#EDD6FF"
 },{
-  name: "Displeased",
+  id: "Displeased",
   color: "#EDD6FF"
 },{
-  name: "Sad",
+  id: "Sad",
   color: "#EDD6FF"
 },]
