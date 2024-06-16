@@ -1,5 +1,5 @@
-import { Text, View, Pressable, ScrollView, StyleSheet,Alert } from 'react-native'
-import { useEffect, useState } from 'react'
+import { Text, View, Pressable, ScrollView, StyleSheet, Alert } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import CloseIcon from '@/assets/svg/close.svg'
 import { scaleHorizontal, scaleVertical } from '@/utils/responsive'
@@ -9,8 +9,11 @@ import getIconEmoji from '@/utils/getIconEmoji'
 import getData from '@/utils/getData'
 import DEFAULT_TAGS from '@/constants/tags'
 import type { TAG } from '@/constants/tags'
-import DoubleArrowIcon from '@/assets/svg/double-arrow.svg'
 import SingleArrowIcon from '@/assets/svg/right-arrow.svg'
+import { ToastViewport, useToastController } from '@tamagui/toast'
+import CustomToast from '@/components/CustomToast'
+import { v4 as uniqueID } from 'uuid';
+import "react-native-get-random-values"
 
 const index = () => {
   const numColumns = 3;
@@ -23,6 +26,10 @@ const index = () => {
   const [selectedTags, setSelectedTags] = useState<string[]>([])
   const [selectedMood, setSelectedMood] = useState<string>()
   const [allTags, setAllTags] = useState<TAG[]>([])
+  const toastControl = useToastController()
+
+
+
   const toggleTag = (tagId: string) => {
     if (selectedTags.includes(tagId)) {
       setSelectedTags(selectedTags.filter((id) => id !== tagId));
@@ -41,7 +48,7 @@ const index = () => {
   }, [])
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: 'white',marginBottom:scaleVertical(15) }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'white', marginBottom: scaleVertical(15) }}>
       <View style={{ marginHorizontal: '4%', flex: 1, rowGap: scaleVertical(15) }}>
         <View style={{
           alignItems: 'flex-end',
@@ -64,17 +71,17 @@ const index = () => {
               {row.map((item, itemIndex) => (
                 <Pressable
                   key={itemIndex}
-                  onPress={() => setSelectedMood(item.name)}
-                  style={[{ width: scaleHorizontal(110), height: scaleVertical(100), borderRadius: 10, justifyContent: 'center', alignItems: 'center', rowGap: scaleVertical(5)},selectedMood === item.name ? {backgroundColor:'black'} : { backgroundColor: item.color}]}
+                  onPress={() => setSelectedMood(item.id)}
+                  style={[{ width: scaleHorizontal(110), height: scaleVertical(100), borderRadius: 10, justifyContent: 'center', alignItems: 'center', rowGap: scaleVertical(5) }, selectedMood === item.id ? { backgroundColor: 'black' } : { backgroundColor: item.color }]}
                 >
-                  {getIconEmoji(item.name, scaleHorizontal(30), scaleVertical(30))}
-                  <Text style={[{ fontSize: scaleVertical(16)}, selectedMood === item.name ? {color:'white'}: {color: 'black'}]}>{item.name}</Text>
+                  {getIconEmoji(item.id, scaleHorizontal(30), scaleVertical(30))}
+                  <Text style={[{ fontSize: scaleVertical(16) }, selectedMood === item.id ? { color: 'white' } : { color: 'black' }]}>{item.id}</Text>
                 </Pressable>
               ))}
             </View>
           ))}
         </View>
-        <View style={{marginTop:scaleVertical(15),flex:1,rowGap:scaleVertical(10)}}>
+        <View style={{ marginTop: scaleVertical(15), flex: 1, rowGap: scaleVertical(10) }}>
           <Text style={{ fontWeight: 'bold', fontSize: scaleVertical(17) }}>What was it about?</Text>
           <ScrollView contentContainerStyle={styles.tagsContainer}>
             {allTags.map((tag) => (
@@ -94,12 +101,15 @@ const index = () => {
           </ScrollView>
           <View>
             <Pressable onPress={() => {
-              if(selectedMood)
-                router.replace(`/create/120?moodId=${selectedMood}&tags=${selectedTags}`)
-              else {
-                Alert.alert("No Mood Selected","Please Select a Mood to create a Note")
+              if (selectedMood) {
+                router.replace(`/create/${uniqueID()}?moodId=${selectedMood}&tags=${selectedTags}`)
+                toastControl.hide()
               }
-              }} style={{ backgroundColor: 'black', width: scaleHorizontal(100), height: scaleVertical(50), borderRadius: 15, justifyContent: 'space-around', alignItems: 'center', flexDirection: 'row',alignSelf:'center',padding:10 }}>
+              else {
+                // Alert.alert("No Mood Selected","Please Select a Mood to create a Note")
+                toastControl.show("Please Select Mood",)
+              }
+            }} style={{ backgroundColor: 'black', width: scaleHorizontal(110), height: scaleVertical(50), borderRadius: 15, justifyContent: 'space-around', alignItems: 'center', flexDirection: 'row', alignSelf: 'center', padding: 10 }}>
               <Text style={{ color: 'white', fontSize: scaleVertical(16) }}>
                 Next
               </Text>
@@ -107,8 +117,11 @@ const index = () => {
             </Pressable>
           </View>
         </View>
-
       </View>
+      <CustomToast />
+
+      <ToastViewport />
+
     </SafeAreaView>
   )
 }
