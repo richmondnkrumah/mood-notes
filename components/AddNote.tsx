@@ -8,11 +8,11 @@ const AddNote = () => {
   return (
     <Pressable style={{
       backgroundColor:'black',
-      width:scaleHorizontal(50),
-      height:scaleVertical(50),
+      width:scaleHorizontal(60),
+      height:scaleVertical(60),
       justifyContent:'center',
-      borderRadius:scaleVertical(25)
-    }} onPress={() => router.push('/create')}>
+      borderRadius:9999
+    }} onPressIn={() => router.push('/create')}>
       <AddIcon style={{alignSelf:'center'}} color={'white'} height={scaleVertical(35)} width={scaleHorizontal(35)}/>
     </Pressable>
   )
